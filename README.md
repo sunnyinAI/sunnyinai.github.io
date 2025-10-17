@@ -85,3 +85,4 @@ At **IIT Bombay**, I also serve as a **System Administrator**, managing mission-
 - The live portfolio is served from `index.html` with styles in `styles.css`.
 - To enable Google Analytics, set `data-ga-id="G-XXXXXXX"` on the `<body>` element in `index.html`.
 - For Plausible, set `data-plausible-domain="yourdomain.com"` on the same `<body>` tag.
+- The hero portrait is `sunny.jpg`; swap it out with another image of the same name to update the photo.
