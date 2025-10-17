@@ -77,3 +77,11 @@ At **IIT Bombay**, I also serve as a **System Administrator**, managing mission-
 
 ⭐️ *Ex-Intern @Samsung Research | @IIM Ahmedabad | @IIT Guwahati*  
 > “Building AI that not only performs, but also protects.”
+
+---
+
+## ⚙️ Site & Analytics Notes
+
+- The live portfolio is served from `index.html` with styles in `styles.css`.
+- To enable Google Analytics, set `data-ga-id="G-XXXXXXX"` on the `<body>` element in `index.html`.
+- For Plausible, set `data-plausible-domain="yourdomain.com"` on the same `<body>` tag.
