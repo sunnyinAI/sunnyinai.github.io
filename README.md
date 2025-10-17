@@ -72,7 +72,6 @@ At **IIT Bombay**, I also serve as a **System Administrator**, managing mission-
 - ✉️ **Email:** sunnygupta@iitb.ac.in  
 - 💼 **LinkedIn:** [linkedin.com/in/isunnyi](https://linkedin.com/in/isunnyi)  
 - 🧪 **Google Scholar:** [tinyurl.com/sunnyscholar](https://tinyurl.com/sunnyscholar)  
-- 🖥️ **GitHub:** [github.com/sunnyinAI](https://github.com/sunnyinAI)  
 
 ---
 
