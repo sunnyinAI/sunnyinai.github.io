@@ -131,17 +131,29 @@ a {
 }
 
 .profile__image img {
-  width: 120px;
-  height: 120px;
+  width: 96px;
+  height: 96px;
   object-fit: cover;
-  border-radius: 16px;
-  box-shadow: 0 10px 20px rgba(15, 23, 42, 0.14);
+  border-radius: 14px;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.14);
 }
 
 .profile__content {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
+}
+
+.profile__header {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.profile__name {
+  font-size: 1.25rem;
+  letter-spacing: -0.01em;
+  margin: 0;
 }
 
 .profile__eyebrow {
@@ -156,12 +168,6 @@ a {
   font-size: 0.73rem;
   color: var(--text-muted);
   opacity: 0.75;
-  margin: 2px 0 0;
-}
-
-.profile__name {
-  font-size: 1.4rem;
-  letter-spacing: -0.01em;
   margin: 0;
 }
 
