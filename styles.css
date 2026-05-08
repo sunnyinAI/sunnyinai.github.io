@@ -295,7 +295,7 @@ a {
 .section-title {
   margin: 0 0 18px;
   font-size: 0.95rem;
-  letter-spacing: 0.24em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--text-muted);
 }
@@ -315,6 +315,9 @@ a {
 
 .content__section h3 {
   font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
 }
 
 .list-with-heading {
@@ -413,7 +416,8 @@ a {
 
 .timeline__role {
   font-size: 0.84rem;
-  font-style: italic;
+  font-style: normal;
+  font-weight: 600;
   color: var(--accent);
 }
 
