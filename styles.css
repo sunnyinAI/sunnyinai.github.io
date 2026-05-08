@@ -384,6 +384,20 @@ a.conf-tag:focus {
   color: #ffffff;
 }
 
+.service-reviewer-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.conf-sep {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  line-height: 1;
+  user-select: none;
+}
+
 .footer__quote {
   margin: 0;
   font-style: italic;
