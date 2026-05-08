@@ -147,8 +147,13 @@ a {
 
 .profile__actions {
   display: grid;
-  gap: 12px;
-  margin-top: 8px;
+  gap: 10px;
+}
+
+.profile__actions-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
 }
 
 .button {
