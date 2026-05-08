@@ -304,6 +304,19 @@ a {
   margin-top: 0;
 }
 
+/* Keep body copy scale consistent across all content cards (matches Experience). */
+.content__section p,
+.content__section li,
+.content__section .timeline__meta,
+.content__section .service-reviewer-row {
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.content__section h3 {
+  font-size: 1.05rem;
+}
+
 .list-with-heading {
   list-style: none;
   padding: 0;
@@ -314,7 +327,6 @@ a {
 
 .list-with-heading h3 {
   margin: 0 0 6px;
-  font-size: 1.05rem;
 }
 
 .list-with-heading p {
@@ -337,7 +349,6 @@ a {
 
 .grid-two h3 {
   margin: 0 0 8px;
-  font-size: 1.05rem;
 }
 
 .grid-two p {
@@ -362,7 +373,6 @@ a {
 
 .timeline h3 {
   margin: 0;
-  font-size: 1.05rem;
 }
 
 .timeline__meta {
@@ -451,9 +461,9 @@ a {
 }
 
 .service-group__label {
-  font-size: 0.78rem;
+  font-size: 0.84rem;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--accent);
   margin: 0 0 14px;
@@ -474,7 +484,6 @@ a {
   align-items: baseline;
   gap: 10px;
   color: var(--text-muted);
-  font-size: 0.95rem;
 }
 
 .conf-tag {
