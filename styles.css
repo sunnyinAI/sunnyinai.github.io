@@ -337,26 +337,34 @@ a {
   color: var(--text-muted);
 }
 
-.grid-two {
-  display: grid;
-  gap: 20px;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+.focus-strip {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  scrollbar-width: thin;
+  scroll-snap-type: x proximity;
 }
 
-.grid-two article {
+.focus-strip article {
+  flex: 0 0 min(320px, 82vw);
   background: var(--surface-alt);
-  border-radius: 18px;
-  padding: 18px 20px;
+  border-radius: 12px;
+  padding: 12px 14px;
   border: 1px solid rgba(15, 23, 42, 0.06);
+  scroll-snap-align: start;
 }
 
-.grid-two h3 {
-  margin: 0 0 8px;
+.focus-strip h3 {
+  margin: 0 0 4px;
+  font-size: 0.9rem;
 }
 
-.grid-two p {
+.focus-strip p {
   margin: 0;
   color: var(--text-muted);
+  font-size: 0.78rem;
+  line-height: 1.38;
 }
 
 .timeline {
