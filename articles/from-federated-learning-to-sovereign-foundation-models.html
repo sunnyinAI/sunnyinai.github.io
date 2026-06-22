@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>From Federated Learning to Sovereign Foundation Models | Sunny Gupta</title>
+  <meta name="description" content="How the same principles behind privacy-preserving healthcare AI — local data control, decentralized optimization, and secure collaboration — are becoming central to frontier AI infrastructure.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css?v=11">
+</head>
+<body data-ga-id="" data-plausible-domain="">
+  <header class="article-nav">
+    <div class="article-nav__inner">
+      <a class="article-nav__back" href="../index.html#writing">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        Back to home
+      </a>
+      <span class="article-nav__name">Sunny Gupta</span>
+    </div>
+  </header>
+
+  <article class="article">
+    <div class="article-hero">
+      <p class="article-hero__eyebrow">Research · June 2026</p>
+      <h1 class="article-hero__title">From Federated Learning to Sovereign Foundation Models</h1>
+      <p class="article-hero__subtitle">How the same principles behind privacy-preserving healthcare AI &mdash; local data control, decentralized optimization, and secure collaboration &mdash; are becoming central to frontier AI infrastructure.</p>
+      <div class="article-hero__meta">
+        <strong>Sunny Gupta</strong>
+        <span class="article-hero__dot"></span>
+        <span>June 2026</span>
+        <span class="article-hero__dot"></span>
+        <span>9 min read</span>
+      </div>
+    </div>
+
+    <div class="article-layout">
+      <aside class="article-toc">
+        <p class="article-toc__label">Contents</p>
+        <nav aria-label="Article sections">
+          <ol>
+            <li><a href="#roots">It started in hospitals</a></li>
+            <li><a href="#sovereignty">From privacy to sovereignty</a></li>
+            <li><a href="#principles">Three principles that transfer</a></li>
+            <li><a href="#adaptation">Adapting big models without moving data</a></li>
+            <li><a href="#aggregation">The update is the product</a></li>
+            <li><a href="#trust">Trust as a design constraint</a></li>
+            <li><a href="#agents">From models to agents</a></li>
+            <li><a href="#closing">Closing thoughts</a></li>
+          </ol>
+        </nav>
+      </aside>
+
+      <div class="article-body">
+        <p class="article-lede">
+          My PhD started with a narrow, stubborn problem: how do you train a good model on hospital data that is never allowed to leave the hospital? Over the last few years I&rsquo;ve watched that same problem &mdash; data you cannot move, owners who will not surrender control &mdash; quietly become one of the central questions of frontier AI. The techniques are the same. Only the scale and the stakes have changed.
+        </p>
+
+        <section id="roots">
+          <h2>It started in hospitals</h2>
+          <p>
+            The constraint that shaped my research is easy to state. Patient records do not leave the building. Privacy law, institutional policy, and plain ethics all push in the same direction: an enormous amount of data exists in aggregate, locked in isolated silos, none of it individually sufficient to train the model you actually want.
+          </p>
+          <p>
+            Federated learning answers this by inverting the usual setup. Instead of bringing the data to the model, you bring the model to the data &mdash; each site trains locally and shares only model <strong>updates</strong>, never raw records. I&rsquo;ve spent years on the hard parts that hide inside that one idea: heterogeneity across sites, personalization, privacy guarantees, and generalizing to hospitals you have never seen. I wrote about all of that in <a href="federated-learning-for-healthcare.html">the ideas behind my research</a>.
+          </p>
+          <p>
+            What I want to argue here is that healthcare was never the special case. It was the early, high-stakes preview of how AI gets built everywhere data is valuable, sensitive, and owned.
+          </p>
+        </section>
+
+        <section id="sovereignty">
+          <h2>From privacy to sovereignty</h2>
+          <p>
+            &ldquo;Privacy&rdquo; undersells what is happening. A hospital does not just want patient data kept confidential &mdash; it wants to retain <em>control</em> over the data and over anything derived from it. The same is true of a bank, a government, a research consortium, or a company sitting on a corpus it considers a competitive moat. The real demand is <strong>sovereignty</strong>: keep the data, keep the derived model, keep the say over how both are used.
+          </p>
+          <p>
+            As foundation models become essential infrastructure rather than research artifacts, that demand only sharpens. Nations want models trained on their own languages and institutions without exporting the underlying corpora. Hospitals want clinical models tuned on their populations without shipping scans to a third party. The question stops being &ldquo;can we centralize this data?&rdquo; &mdash; the answer is no &mdash; and becomes &ldquo;how do we build a capable model <em>across</em> owners who will never pool their data?&rdquo;
+          </p>
+          <p class="article-quote">
+            Sovereign AI is federated learning&rsquo;s original problem, scaled up from a single hospital network to the level of institutions and nations.
+          </p>
+        </section>
+
+        <section id="principles">
+          <h2>Three principles that transfer</h2>
+          <p>
+            Three ideas carry almost unchanged from privacy-preserving healthcare AI to sovereign foundation models.
+          </p>
+          <p>
+            <strong>Local data control.</strong> Computation moves to the data, not the other way around. The raw corpus never leaves its owner&rsquo;s environment; what circulates is a model, a gradient, an adapter &mdash; never the records themselves.
+          </p>
+          <p>
+            <strong>Decentralized optimization.</strong> Training becomes a coordination problem across non-identical participants. The same heterogeneity that makes hospitals hard to average &mdash; different distributions, different sizes, different label conventions &mdash; reappears across institutions and regions. The machinery I built to stabilise it, like the James&ndash;Stein shrinkage in <a class="paper-ref" href="https://proceedings.mlr.press/v281/gupta25a.html" target="_blank" rel="noopener">FedStein</a> or the cross-client feature alignment in <a class="paper-ref" href="https://openaccess.thecvf.com/content/CVPR2025W/FedVision/html/Gupta_FedAlign_Federated_Domain_Generalization_with_Cross-Client_Feature_Alignment_CVPRW_2025_paper.html" target="_blank" rel="noopener">FedAlign</a>, is exactly the kind of tooling sovereign training needs.
+          </p>
+          <p>
+            <strong>Secure collaboration.</strong> Keeping raw data home is a starting point, not a guarantee &mdash; updates can leak. Differential privacy and secure aggregation turn &ldquo;the data stays here&rdquo; into something you can actually reason about. In <span class="paper-ref">FedHypeVAE</span> we went a step further, sharing differentially private embeddings rather than raw model updates, so the collaboration carries a formal privacy budget with it.
+          </p>
+        </section>
+
+        <section id="adaptation">
+          <h2>Adapting big models without moving data</h2>
+          <p>
+            The obvious objection: foundation models are enormous, and federation already strains under the cost of shipping ordinary models around. You cannot round-trip a hundred billion parameters across a consortium every training step.
+          </p>
+          <p>
+            You don&rsquo;t have to. The shift that makes federated foundation models practical is <strong>parameter-efficient adaptation</strong> &mdash; freeze the giant backbone and learn small, cheap-to-communicate pieces on top: adapters, low-rank updates, prompts. Each owner adapts the shared model to its own data and exchanges only the adapter. My work on <a class="paper-ref" href="https://openreview.net/forum?id=lhA3oVClTf" target="_blank" rel="noopener">Sequential Compression Layers</a> targets exactly this regime, shrinking what foundation-model clients need to exchange during federated fine-tuning, and in <span class="paper-ref">BiPrompt</span> we adapt vision-language models through prompts rather than full weights.
+          </p>
+          <div class="article-callout">
+            <p>The mental model flips. The frozen foundation model is shared infrastructure; the valuable, private thing is the small adaptation each owner trains on its own data &mdash; and that is what federation is built to protect.</p>
+          </div>
+        </section>
+
+        <section id="aggregation">
+          <h2>The update is the product</h2>
+          <p>
+            Once the adapter, not the data, is the unit of collaboration, the entire system reorganizes around moving and combining updates well. How do you aggregate adapters from owners whose data looks nothing alike? How do you stop a few large participants from dominating the result? How do you keep the rare, important signal &mdash; the equivalent of the rare diagnosis &mdash; from being averaged into oblivion?
+          </p>
+          <p>
+            These are the questions I&rsquo;ve been circling for years in a clinical setting. In <a class="paper-ref" href="https://icml.cc/virtual/2025/47994" target="_blank" rel="noopener">FEDTAIL</a> we used sharpness-guided gradient matching so rare classes survive aggregation; in <a class="paper-ref" href="https://openreview.net/forum?id=sf1ovOGTaf" target="_blank" rel="noopener">FedVR</a> a variance-regularized hypernetwork keeps any single domain from dominating. At foundation-model scale the variables change, but the aggregation problem is recognizably the same one.
+          </p>
+        </section>
+
+        <section id="trust">
+          <h2>Trust as a design constraint</h2>
+          <p>
+            When a model is trained across institutions that do not fully trust each other, &ldquo;trustworthy AI&rdquo; stops being a slogan and becomes an engineering requirement. You need privacy you can quantify, robustness to participants who behave badly or just behave differently, and fairness across populations that are represented very unevenly in the federation.
+          </p>
+          <p>
+            I find healthcare clarifying here precisely because it is unforgiving: a model that is accurate on average but fails on an underrepresented group is not acceptable in a clinic, and it should not be acceptable in a sovereign model either. The constraints that medicine forced me to take seriously &mdash; calibrated privacy, fairness across cohorts, reliability on the tail &mdash; are the same constraints frontier AI is now discovering it cannot skip.
+          </p>
+        </section>
+
+        <section id="agents">
+          <h2>From models to agents</h2>
+          <p>
+            The newest twist is that the thing being deployed is increasingly not a single model but a system of agents &mdash; models that call tools, hold memory, and act. During my time at Samsung working on an AI operating system for managing LLM-based agents, the recurring theme was governance: isolation, scheduling, access control, and resource limits for autonomous systems running under real constraints.
+          </p>
+          <p>
+            Put sovereignty and agents together and you get the direction I&rsquo;m building toward now: decentralized agents that coordinate across tools, data, and institutional boundaries without surrendering control to a central operator. That is the premise behind <a href="https://sunnyinai.github.io/ErdosFC/fc/" target="_blank" rel="noopener">ErdosFC</a>, a federated computing runtime, and <a href="https://sunnyinai.github.io/ErdosFC/fai/" target="_blank" rel="noopener">ErdosFAI</a>, a platform for building and governing agents across decentralized environments.
+          </p>
+        </section>
+
+        <section id="closing">
+          <h2>Closing thoughts</h2>
+          <p>
+            I used to describe my research as &ldquo;federated learning for healthcare.&rdquo; I now think the healthcare part was the proving ground and the federated part was the point. The constraints that make medical AI hard &mdash; data you cannot move, owners who keep control, privacy you must guarantee, fairness you cannot fake &mdash; are becoming the default conditions for building frontier AI at all.
+          </p>
+          <p>
+            If foundation models are infrastructure, then the real question is who gets to train, adapt, and deploy them, and on whose terms. I think the answer looks a lot like federation. If you&rsquo;re working on this &mdash; or you see it differently &mdash; I&rsquo;d love to hear from you: <a href="mailto:sunnygupta@iitb.ac.in">sunnygupta@iitb.ac.in</a>.
+          </p>
+        </section>
+
+        <div class="article-end">
+          <div class="article-end__author">
+            <img src="../sunny.jpg" alt="Portrait of Sunny Gupta">
+            <div>
+              <p class="article-end__name">Sunny Gupta</p>
+              <p class="article-end__role">PhD Scholar, IIT Bombay &middot; Federated, sovereign &amp; trustworthy AI</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <script src="../analytics.js"></script>
+  <script>
+    (function () {
+      var links = Array.prototype.slice.call(document.querySelectorAll('.article-toc a'));
+      var ids = links.map(function (a) { return a.getAttribute('href').slice(1); });
+      function onScroll() {
+        var current = ids[0];
+        for (var i = 0; i < ids.length; i++) {
+          var el = document.getElementById(ids[i]);
+          if (el && el.getBoundingClientRect().top <= 140) current = ids[i];
+        }
+        links.forEach(function (a) {
+          a.classList.toggle('is-active', a.getAttribute('href') === '#' + current);
+        });
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
+  </script>
+</body>
+</html>

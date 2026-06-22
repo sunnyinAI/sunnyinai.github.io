@@ -507,6 +507,23 @@ a {
   border-bottom: 1px solid var(--border);
 }
 
+.alignment-list {
+  margin: 14px 0 18px;
+  padding-left: 20px;
+  display: grid;
+  gap: 8px;
+}
+
+.alignment-list li {
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+.skills-groups {
+  display: grid;
+  gap: 28px;
+}
+
 .service-list {
   list-style: none;
   padding: 0;
@@ -1114,4 +1131,11 @@ a.paper-ref:hover {
   font-size: 0.82rem;
   color: var(--text-muted);
   line-height: 1.5;
+}
+
+.project-item__desc {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-top: 4px;
 }

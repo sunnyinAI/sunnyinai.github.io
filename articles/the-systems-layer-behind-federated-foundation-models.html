@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Systems Layer Behind Federated Foundation Models | Sunny Gupta</title>
+  <meta name="description" content="A practical view of the infrastructure needed for distributed model training: GPU clusters, communication bottlenecks, checkpointing, orchestration, profiling, and model-update aggregation.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css?v=11">
+</head>
+<body data-ga-id="" data-plausible-domain="">
+  <header class="article-nav">
+    <div class="article-nav__inner">
+      <a class="article-nav__back" href="../index.html#writing">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        Back to home
+      </a>
+      <span class="article-nav__name">Sunny Gupta</span>
+    </div>
+  </header>
+
+  <article class="article">
+    <div class="article-hero">
+      <p class="article-hero__eyebrow">Infrastructure · June 2026</p>
+      <h1 class="article-hero__title">The Systems Layer Behind Federated Foundation Models</h1>
+      <p class="article-hero__subtitle">A practical view of the infrastructure that distributed model training actually runs on: GPU clusters, communication bottlenecks, checkpointing, orchestration, profiling, and update aggregation.</p>
+      <div class="article-hero__meta">
+        <strong>Sunny Gupta</strong>
+        <span class="article-hero__dot"></span>
+        <span>June 2026</span>
+        <span class="article-hero__dot"></span>
+        <span>10 min read</span>
+      </div>
+    </div>
+
+    <div class="article-layout">
+      <aside class="article-toc">
+        <p class="article-toc__label">Contents</p>
+        <nav aria-label="Article sections">
+          <ol>
+            <li><a href="#why">Why the systems layer matters</a></li>
+            <li><a href="#hardware">GPU clusters and the hardware reality</a></li>
+            <li><a href="#communication">Communication is the bottleneck</a></li>
+            <li><a href="#aggregation">Aggregating updates at scale</a></li>
+            <li><a href="#checkpointing">Checkpointing and fault tolerance</a></li>
+            <li><a href="#orchestration">Orchestration and scheduling</a></li>
+            <li><a href="#profiling">Profiling: where the time goes</a></li>
+            <li><a href="#runtime">Toward a federated runtime</a></li>
+            <li><a href="#closing">Closing thoughts</a></li>
+          </ol>
+        </nav>
+      </aside>
+
+      <div class="article-body">
+        <p class="article-lede">
+          Most papers on federated and foundation-model training end where the real work begins: an algorithm that is correct on a whiteboard still has to survive contact with real GPUs, real networks, and jobs that run for days. I spend a lot of my time on that side of the line &mdash; as a researcher and as the person who keeps a lab&rsquo;s clusters alive. This is a tour of the systems layer underneath distributed model training, and why it decides what is actually possible.
+        </p>
+
+        <section id="why">
+          <h2>Why the systems layer matters</h2>
+          <p>
+            There is a comfortable fiction in machine learning that the model is the hard part and everything else is plumbing. In practice the plumbing sets the ceiling. How big a model you can train, how many clients you can include, how often you can afford to communicate, how gracefully you recover when a node dies at 3 a.m. &mdash; these are systems questions, and they bound the science.
+          </p>
+          <p>
+            I see both sides of this daily. Alongside my PhD I serve as System Administrator for the MedaL Lab, managing NVIDIA DGX systems, Linux servers, and GPU clusters that other people&rsquo;s research runs on. That dual role &mdash; designing federated algorithms and then being the one paged when a training run falls over &mdash; is what this piece is really about.
+          </p>
+        </section>
+
+        <section id="hardware">
+          <h2>GPU clusters and the hardware reality</h2>
+          <p>
+            A modern training cluster is a hierarchy of bottlenecks. Inside a node, GPUs talk to each other over fast interconnects (NVLink, NVSwitch); across nodes they fall back to slower fabric. Memory is the first wall you hit &mdash; a foundation model&rsquo;s weights, gradients, and optimizer state rarely fit on one device, so the model has to be split. Data parallelism, tensor parallelism, pipeline parallelism, and sharded optimizers each trade compute, memory, and communication differently, and choosing badly can leave expensive hardware idle.
+          </p>
+          <p>
+            The unglamorous truth is that utilization is the metric that matters. A cluster that is &ldquo;in use&rdquo; but sitting at thirty percent GPU utilization is burning money and time. Most of the systems work below is, ultimately, a fight to keep those GPUs busy with useful work instead of waiting.
+          </p>
+        </section>
+
+        <section id="communication">
+          <h2>Communication is the bottleneck</h2>
+          <p>
+            In ordinary distributed training, gradients are synchronized every step; in federated training, updates cross a network that may be slow, metered, or unreliable. Either way, communication &mdash; not computation &mdash; is usually what you are actually paying for. Every round ships parameters over the wire, and for a large model that is a lot of bytes multiplied by a lot of participants.
+          </p>
+          <p>
+            There are two honest ways to win: send fewer rounds, or send smaller messages. On the first, second-order ideas like the Nesterov-accelerated sketched Newton method in <a class="paper-ref" href="https://ieeexplore.ieee.org/abstract/document/10825820" target="_blank" rel="noopener">FLeNS</a> reach a good model in fewer communication rounds. On the second, <a class="paper-ref" href="https://openreview.net/forum?id=lhA3oVClTf" target="_blank" rel="noopener">Sequential Compression Layers</a> shrink what foundation-model clients need to exchange during federated fine-tuning. Parameter-efficient adaptation helps enormously here too: if you only ever communicate small adapters instead of the full backbone, the bandwidth problem becomes tractable.
+          </p>
+          <p class="article-quote">
+            Almost every practical advance in distributed learning is, underneath, a way to move less data or move it less often.
+          </p>
+        </section>
+
+        <section id="aggregation">
+          <h2>Aggregating updates at scale</h2>
+          <p>
+            Aggregation sounds trivial &mdash; average the updates &mdash; and is anything but. At scale you have to decide how to weight participants, how to handle stragglers who report late or not at all, and how to combine updates from clients whose data is wildly non-identical without letting a few dominate. Do it synchronously and the slowest client sets the pace; do it asynchronously and you inherit staleness and consistency headaches.
+          </p>
+          <p>
+            This is where the algorithm and the system stop being separable. The aggregation strategy I choose for statistical reasons &mdash; say, protecting rare classes the way <a class="paper-ref" href="https://icml.cc/virtual/2025/47994" target="_blank" rel="noopener">FEDTAIL</a> does, or stabilising heterogeneous clients the way <a class="paper-ref" href="https://proceedings.mlr.press/v281/gupta25a.html" target="_blank" rel="noopener">FedStein</a> does &mdash; directly shapes the communication pattern and the failure modes the system has to tolerate.
+          </p>
+        </section>
+
+        <section id="checkpointing">
+          <h2>Checkpointing and fault tolerance</h2>
+          <p>
+            Train anything for long enough on enough hardware and something will fail: a GPU throws an error, a node reboots, the network blips. A multi-day run with no recovery story is a multi-day run you will eventually lose. Checkpointing &mdash; periodically persisting model and optimizer state so you can resume &mdash; is what turns a fragile job into a durable one.
+          </p>
+          <p>
+            And it is its own engineering problem. Checkpoints for large models are huge; writing them too often stalls training on I/O, too rarely and a crash costs hours of progress. Sharded and asynchronous checkpointing, fast parallel filesystems, and storage that can absorb the bursts all matter. Half of keeping a cluster productive is making sure that when &mdash; not if &mdash; something breaks, the cost is minutes, not days.
+          </p>
+        </section>
+
+        <section id="orchestration">
+          <h2>Orchestration and scheduling</h2>
+          <p>
+            A shared cluster is a contended resource. Many users, many jobs, finite GPUs. The scheduler decides who runs when, how resources are isolated, and how a large multi-node job gets placed without fragmenting the cluster. Get this wrong and you get the worst outcome in research computing: idle GPUs next to a queue of people waiting to use them.
+          </p>
+          <p>
+            I came at orchestration from an unusual angle during my internship at Samsung, working on an AI operating system for managing LLM-based agents &mdash; resource isolation, scheduling, memory management, and tool-execution separation through a central kernel. The framing stuck with me: training infrastructure and agent infrastructure are both, fundamentally, about governing who gets which resources, when, and under what limits.
+          </p>
+        </section>
+
+        <section id="profiling">
+          <h2>Profiling: where the time goes</h2>
+          <p>
+            You cannot fix what you cannot see. Before optimizing anything, you have to know whether a run is bound by compute, memory bandwidth, communication, or I/O &mdash; and intuition is wrong often enough that guessing is expensive. Profiling tools, GPU utilization traces, and timeline views turn a vague &ldquo;it&rsquo;s slow&rdquo; into a specific, fixable bottleneck.
+          </p>
+          <div class="article-callout">
+            <p>A practical loop: profile the run, find the dominant cost, attack just that one, then profile again. The bottleneck always moves &mdash; the discipline is to keep chasing it rather than optimizing whatever is most fun to optimize.</p>
+          </div>
+          <p>
+            This is also where monitoring earns its keep. Cluster-wide metrics &mdash; utilization, memory pressure, temperatures, job health &mdash; are what let you catch a degraded run before it wastes a day, and what tell you whether the cluster is actually being used well or just being busy.
+          </p>
+        </section>
+
+        <section id="runtime">
+          <h2>Toward a federated runtime</h2>
+          <p>
+            All of these pieces &mdash; placement, communication, aggregation, checkpointing, recovery, monitoring &mdash; want to live together in a coherent runtime rather than be reinvented per project. That conviction is what I&rsquo;m building toward with <a href="https://sunnyinai.github.io/ErdosFC/fc/" target="_blank" rel="noopener">ErdosFC</a>, a research-oriented federated computing runtime for training models across distributed data owners without centralizing raw data, with privacy-preserving learning, heterogeneous clients, and communication-efficient aggregation as first-class concerns rather than afterthoughts.
+          </p>
+          <p>
+            The companion direction, <a href="https://sunnyinai.github.io/ErdosFC/fai/" target="_blank" rel="noopener">ErdosFAI</a>, carries the same systems mindset into agents &mdash; building, deploying, and governing them across decentralized environments with the observability and control that anything running in production needs.
+          </p>
+        </section>
+
+        <section id="closing">
+          <h2>Closing thoughts</h2>
+          <p>
+            It is tempting to treat infrastructure as someone else&rsquo;s job &mdash; the layer you assume away so you can get to the model. I&rsquo;ve found the opposite to be true: the systems layer is where federated foundation models are won or lost. The cleverest aggregation scheme is useless if it cannot survive a flaky network, and the most capable model is irrelevant if you cannot keep the GPUs fed long enough to train it.
+          </p>
+          <p>
+            Bridging the algorithm and the machine it runs on is the part of this work I find most satisfying. If you work on distributed training systems &mdash; or you&rsquo;re fighting one of these bottlenecks right now &mdash; I&rsquo;d be glad to compare notes: <a href="mailto:sunnygupta@iitb.ac.in">sunnygupta@iitb.ac.in</a>.
+          </p>
+        </section>
+
+        <div class="article-end">
+          <div class="article-end__author">
+            <img src="../sunny.jpg" alt="Portrait of Sunny Gupta">
+            <div>
+              <p class="article-end__name">Sunny Gupta</p>
+              <p class="article-end__role">PhD Scholar &amp; System Administrator, IIT Bombay &middot; Distributed training &amp; AI infrastructure</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <script src="../analytics.js"></script>
+  <script>
+    (function () {
+      var links = Array.prototype.slice.call(document.querySelectorAll('.article-toc a'));
+      var ids = links.map(function (a) { return a.getAttribute('href').slice(1); });
+      function onScroll() {
+        var current = ids[0];
+        for (var i = 0; i < ids.length; i++) {
+          var el = document.getElementById(ids[i]);
+          if (el && el.getBoundingClientRect().top <= 140) current = ids[i];
+        }
+        links.forEach(function (a) {
+          a.classList.toggle('is-active', a.getAttribute('href') === '#' + current);
+        });
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
+  </script>
+</body>
+</html>
