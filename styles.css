@@ -72,7 +72,7 @@ a {
 }
 
 .top-nav__inner {
-  width: min(1200px, 95vw);
+  width: min(1440px, 95vw);
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -105,11 +105,11 @@ a {
 }
 
 .page {
-  width: min(1200px, 95vw);
+  width: min(1440px, 95vw);
   margin: clamp(20px, 3vw, 40px) auto clamp(32px, 6vw, 80px);
   display: grid;
-  grid-template-columns: minmax(260px, 320px) 1fr;
-  gap: clamp(36px, 6vw, 96px);
+  grid-template-columns: minmax(280px, 360px) 1fr;
+  gap: clamp(28px, 3.5vw, 56px);
 }
 
 .sidebar {
