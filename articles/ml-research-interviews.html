@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A Field Guide to ML Research Interviews | Sunny Gupta</title>
+  <meta name="description" content="What the machine learning research interview loop really looks like — and a concrete plan to prepare for it — when moving from a PhD into industry.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css?v=10">
+</head>
+<body data-ga-id="" data-plausible-domain="">
+  <header class="article-nav">
+    <div class="article-nav__inner">
+      <a class="article-nav__back" href="../index.html#writing">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        Back to home
+      </a>
+      <span class="article-nav__name">Sunny Gupta</span>
+    </div>
+  </header>
+
+  <article class="article">
+    <div class="article-hero">
+      <p class="article-hero__eyebrow">Career · June 2026</p>
+      <h1 class="article-hero__title">A Field Guide to Machine Learning Research Interviews</h1>
+      <p class="article-hero__subtitle">What the interview loop really looks like &mdash; and a concrete plan to prepare for it &mdash; when you&rsquo;re moving from a PhD into an industry research role.</p>
+      <div class="article-hero__meta">
+        <strong>Sunny Gupta</strong>
+        <span class="article-hero__dot"></span>
+        <span>June 2026</span>
+        <span class="article-hero__dot"></span>
+        <span>13 min read</span>
+      </div>
+    </div>
+
+    <div class="article-layout">
+      <aside class="article-toc">
+        <p class="article-toc__label">Contents</p>
+        <nav aria-label="Article sections">
+          <ol>
+            <li><a href="#who">Who this is for</a></li>
+            <li><a href="#getting">Getting interviews</a></li>
+            <li><a href="#roles">Roles and companies</a></li>
+            <li><a href="#structure">The interview loop</a></li>
+            <li><a href="#technical">Preparing: technical</a></li>
+            <li><a href="#research">The research interview</a></li>
+            <li><a href="#mocks">Mock interviews</a></li>
+            <li><a href="#logistics">Running the process</a></li>
+            <li><a href="#negotiation">Negotiation</a></li>
+            <li><a href="#offers">Choosing an offer</a></li>
+            <li><a href="#checklist">A topics checklist</a></li>
+            <li><a href="#closing">Closing thoughts</a></li>
+          </ol>
+        </nav>
+      </aside>
+
+      <div class="article-body">
+        <p class="article-lede">
+          Research interviews in machine learning are a strange genre. You can spend five years becoming one of the world&rsquo;s experts in a narrow subfield and still be asked, in a single afternoon, to implement attention from memory, reverse a linked list, and explain why a training loss has stopped going down. This is a map of that process and a concrete plan for preparing for it &mdash; written for PhDs and researchers making the jump into industry.
+        </p>
+
+        <section id="who">
+          <h2>Who this is for</h2>
+          <p>
+            If you are a late-stage PhD student, a postdoc, or a working researcher looking at Research Scientist or Research Engineer roles, this should be useful. The specifics lean toward machine learning and deep learning, but the structure transfers across subfields.
+          </p>
+          <p>
+            The single most important idea is this: <strong>getting interviews and passing interviews are two different skills.</strong> Your research record opens the door; a separate, entirely learnable skill set gets you the offer. Most strong researchers who stumble do so not because they lack knowledge, but because they never treated interviewing as its own discipline with its own preparation.
+          </p>
+          <div class="article-callout">
+            <p>Treat interview preparation as a project with a deadline &mdash; not as a state of readiness you will eventually drift into. You will never feel ready. Start before you feel ready.</p>
+          </div>
+        </section>
+
+        <section id="getting">
+          <h2>Getting interviews</h2>
+          <p>
+            If you are struggling to get interviews at all, the levers are the familiar ones: more first-author papers, work on topics people currently care about, and at least one industry internship. As a rough calibration, a few first-author papers at venues like NeurIPS, ICML, ICLR, CVPR, or AAAI, plus an internship, tends to make callbacks from strong labs reliable. Below that bar, you compensate with referrals and direct outreach.
+          </p>
+          <p>
+            Once you <em>are</em> getting interviews, more papers stop helping. The marginal hour is far better spent preparing, because the people interviewing you often will not have read your work in any detail. A few channels are worth understanding:
+          </p>
+          <h3>Where roles actually surface</h3>
+          <p>
+            Company career pages are the obvious route, but many research roles &mdash; and most internships &mdash; are announced on LinkedIn and X first, sometimes with the real application hidden behind a form linked from the post. Follow the researchers and recruiters at the labs you care about so these do not pass you by.
+          </p>
+          <h3>Referrals, cold emails, and materials</h3>
+          <p>
+            A <strong>referral</strong> is nice but rarely decisive; mostly it guarantees a human looks at your application. Ask a former collaborator if you have one, and do not agonize if you do not. A <strong>cold email</strong> is underrated for research roles: write to the hiring manager or a researcher whose agenda you would want to join, and make it specific &mdash; one concrete paragraph about their work and what you would contribute beats three paragraphs restating your CV. Finally, make yourself trivially easy to verify: a clean CV with your role and venue on each paper, a Google Scholar page, and a simple website that ties it together. A busy person should be able to confirm you are real and relevant in about thirty seconds.
+          </p>
+        </section>
+
+        <section id="roles">
+          <h2>Roles and companies</h2>
+          <p>
+            Two distinctions are worth getting straight before you apply, because they shape both the interview and the job.
+          </p>
+          <h3>Research Scientist vs Research Engineer</h3>
+          <p>
+            The line is blurry and lab-dependent. A Scientist typically owns research direction and publishes; an Engineer typically owns the infrastructure, scaling, and implementation that make the research possible &mdash; though strong Engineers co-author papers and shape direction too. The loops overlap heavily, and some labs will reroute a strong candidate from one track to the other. Unless you have a firm preference, applying with an open mind widens your options.
+          </p>
+          <h3>Big lab vs startup</h3>
+          <p>
+            A real trade-off, and &ldquo;it depends&rdquo; is the honest answer. Big labs offer a predictable process, a recognizable name on your CV, deep compute, and a lot of brilliant colleagues &mdash; but you are one of many, and direction is largely set above you. Startups offer ownership, faster growth, and sometimes more interesting and impactful work &mdash; alongside more variance in quality, more infrastructure work you did not sign up for, agendas that shift, and a brand you will have to explain later. Use the interview to probe: who sets research priorities? how is success measured? what is the compute budget? what happens if a frontier lab ships your idea next quarter? The answers reveal more than any recruiting pitch.
+          </p>
+          <h3>A note on compensation</h3>
+          <p>
+            When an offer leans heavily on startup equity, discount the headline number in your head until you understand how it actually works: vesting schedules, how each funding round dilutes your share, whether and when you could ever sell, and the tax treatment of options, which can land you a bill before you have seen any cash. Treatment varies significantly by country, and none of this is financial advice &mdash; but be skeptical of large numbers that depend on a private company&rsquo;s future valuation, and ask precise questions before weighing them against cash.
+          </p>
+        </section>
+
+        <section id="structure">
+          <h2>The interview loop</h2>
+          <p>
+            Most processes follow a similar arc, though the weight on each stage varies a lot from one company to the next.
+          </p>
+
+          <figure class="article-figure">
+            <svg viewBox="0 0 720 116" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="loopTitle loopDesc">
+              <title id="loopTitle">The ML research interview loop</title>
+              <desc id="loopDesc">A typical sequence: recruiter screen, then technical rounds, then a research deep-dive, then a behavioral round, ending in offer and negotiation.</desc>
+              <defs>
+                <marker id="fa" markerWidth="9" markerHeight="9" refX="5" refY="4" orient="auto">
+                  <path d="M1 1 L6 4 L1 7" fill="none" stroke="#9bb1d4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
+                </marker>
+              </defs>
+              <line x1="122" y1="58" x2="146" y2="58" stroke="#9bb1d4" stroke-width="1.6" marker-end="url(#fa)"></line>
+              <line x1="272" y1="58" x2="296" y2="58" stroke="#9bb1d4" stroke-width="1.6" marker-end="url(#fa)"></line>
+              <line x1="422" y1="58" x2="446" y2="58" stroke="#9bb1d4" stroke-width="1.6" marker-end="url(#fa)"></line>
+              <line x1="572" y1="58" x2="596" y2="58" stroke="#9bb1d4" stroke-width="1.6" marker-end="url(#fa)"></line>
+
+              <rect x="2" y="30" width="120" height="56" rx="12" fill="#eef3fb" stroke="#dbe5f3"></rect>
+              <text x="62" y="55" text-anchor="middle" font-size="12.5" font-weight="700" fill="#0c447c" font-family="Inter, sans-serif">Recruiter</text>
+              <text x="62" y="71" text-anchor="middle" font-size="11" fill="#5e6b81" font-family="Inter, sans-serif">screen</text>
+
+              <rect x="152" y="30" width="120" height="56" rx="12" fill="#eef3fb" stroke="#dbe5f3"></rect>
+              <text x="212" y="55" text-anchor="middle" font-size="12.5" font-weight="700" fill="#0c447c" font-family="Inter, sans-serif">Technical</text>
+              <text x="212" y="71" text-anchor="middle" font-size="11" fill="#5e6b81" font-family="Inter, sans-serif">rounds (3&ndash;6)</text>
+
+              <rect x="302" y="30" width="120" height="56" rx="12" fill="#eef3fb" stroke="#dbe5f3"></rect>
+              <text x="362" y="55" text-anchor="middle" font-size="12.5" font-weight="700" fill="#0c447c" font-family="Inter, sans-serif">Research</text>
+              <text x="362" y="71" text-anchor="middle" font-size="11" fill="#5e6b81" font-family="Inter, sans-serif">deep-dive</text>
+
+              <rect x="452" y="30" width="120" height="56" rx="12" fill="#eef3fb" stroke="#dbe5f3"></rect>
+              <text x="512" y="55" text-anchor="middle" font-size="12.5" font-weight="700" fill="#0c447c" font-family="Inter, sans-serif">Behavioral</text>
+              <text x="512" y="71" text-anchor="middle" font-size="11" fill="#5e6b81" font-family="Inter, sans-serif">round</text>
+
+              <rect x="602" y="30" width="116" height="56" rx="12" fill="#0047ab"></rect>
+              <text x="660" y="55" text-anchor="middle" font-size="12.5" font-weight="700" fill="#ffffff" font-family="Inter, sans-serif">Offer &amp;</text>
+              <text x="660" y="71" text-anchor="middle" font-size="11" fill="#cdddf4" font-family="Inter, sans-serif">negotiation</text>
+            </svg>
+            <figcaption>A typical loop. The order is roughly fixed; the number of technical rounds and how much each stage counts vary widely by company.</figcaption>
+          </figure>
+
+          <p>
+            The <strong>recruiter screen</strong> is usually a low-stakes conversation that calibrates your level and checks basic fit. Be able to summarize your research in two minutes for a non-expert, and be clear about what you are looking for &mdash; recruiters route you, so help them route you well. The <strong>technical rounds</strong> are the bulk of the process: expect some combination of data-structures-and-algorithms coding, hands-on ML implementation and debugging, broad-and-deep ML knowledge, and occasionally an ML or system design round. A <strong>research deep-dive</strong> asks you to present and defend your own work and discuss where the field is going. Finally, <strong>behavioral</strong> rounds probe collaboration, conflict, failure, and motivation; they are lower-variance but not negligible, and unprepared answers do sink candidates. Ask your recruiter what each round will contain &mdash; they will almost always tell you.
+          </p>
+        </section>
+
+        <section id="technical">
+          <h2>Preparing: the technical loop</h2>
+          <p>
+            Here is the uncomfortable truth: being excellent at research does not automatically transfer to interview performance. Implementing multi-head attention while someone watches the cursor blink is a different skill from having published on attention. Budget at least four to six weeks of deliberate practice, and target most of it at the specific companies and rounds coming up rather than at generic preparation.
+          </p>
+          <h3>Coding (data structures and algorithms)</h3>
+          <p>
+            Work through a focused, finite set of problems rather than grinding endlessly &mdash; a curated list of the common patterns, then more medium-difficulty problems if you have time. Prioritize breadth of patterns over hard puzzles: arrays and hashing, two pointers, sliding window, stacks, trees, graph traversal, backtracking, binary search, heaps, intervals, and a working command of dynamic programming. Aim to solve a medium problem cleanly in around twenty minutes, at optimal time complexity, narrating as you go; a brute-force-only answer generally reads as a miss. The first fifty problems feel demoralizing and then it suddenly clicks &mdash; push through that wall.
+          </p>
+          <h3>ML implementation and debugging</h3>
+          <p>
+            This is often the highest-signal and least-practiced round. Be able to write, from scratch and under time pressure:
+          </p>
+          <ul>
+            <li>a transformer block, end to end;</li>
+            <li>self-, causal, and cross-attention;</li>
+            <li>an MLP&rsquo;s forward and backward pass;</li>
+            <li>a minimal training loop in PyTorch or JAX;</li>
+            <li>and, ideally, a memory-efficient attention variant.</li>
+          </ul>
+          <p>
+            The debugging variant is genuinely hard to fake. Practice it by taking working training code, breaking it on purpose, and re-finding the bug &mdash; or by reviewing your own old code for the classics: shape mismatches, the wrong reduction axis, a missing detach, train-versus-eval mode, a learning rate off by an order of magnitude, label leakage. Reps matter more here than cleverness.
+          </p>
+          <h3>ML knowledge (breadth and depth)</h3>
+          <p>
+            You will be tested broadly &mdash; overfitting, regularization, optimization, evaluation metrics &mdash; and deeply within your own area. Build your own notes or flashcards in your own words; the act of writing them is most of the learning. Aim to be able to <em>derive</em> rather than recall: if you can reconstruct the bias&ndash;variance decomposition, the VAE&rsquo;s ELBO, or why normalization helps, you can survive the follow-ups. A topics map is at the end of this guide.
+          </p>
+          <h3>ML and system design</h3>
+          <p>
+            Less common, but real &mdash; especially for applied or engineering-leaning roles. Practice a structure: clarify the objective and constraints, propose the data and a simple baseline, choose a model, define evaluation and metrics, then discuss scaling, serving, and failure modes. A clear structure beats a clever model.
+          </p>
+        </section>
+
+        <section id="research">
+          <h2>The research interview</h2>
+          <p>
+            Researchers routinely under-prepare for this round on the assumption that talking about their own work is automatic. It is not. Prepare a crisp account of one or two of your strongest projects at two depths: a two-minute version for a generalist, and a twenty-minute version that withstands an expert probing every design choice. Rehearse the transitions between them.
+          </p>
+          <p>
+            Expect questions like &ldquo;why this choice and not the obvious alternative?&rdquo;, &ldquo;what would you do with ten times the compute?&rdquo;, and &ldquo;what is the weakest part of this work?&rdquo; Knowing your own limitations cold reads as maturity, not weakness. Have a considered opinion on where your field is heading, and be willing to disagree thoughtfully &mdash; the interviewer is evaluating a future colleague, not an audience.
+          </p>
+          <p class="article-quote">
+            They are not checking whether you can present. They are checking whether they want to argue about research with you every week.
+          </p>
+        </section>
+
+        <section id="mocks">
+          <h2>Mock interviews</h2>
+          <p>
+            Practice out loud, under realistic constraints. Solving a problem silently on paper is a different activity from narrating a solution while someone interrupts you. The gap between the two is exactly what the interview tests.
+          </p>
+          <p>
+            A large language model makes a tireless mock interviewer. Paste in the role description and the round type, ask it to interview you at the appropriate level, and ask it to critique your answers afterward. The overlap between good practice questions and real ones is often surprising, and the feedback loop is fast and free; if the difficulty feels off, restate your level and background explicitly and try again. Where you can, add a few mocks with peers &mdash; especially for coding and the research talk, where a human&rsquo;s live follow-ups are hard to simulate.
+          </p>
+        </section>
+
+        <section id="logistics">
+          <h2>Running the process</h2>
+          <p>
+            Treat the search as a campaign, and track it. A simple spreadsheet &mdash; companies, current stage, contacts, deadlines &mdash; prevents the avoidable losses: forgetting to follow up, missing an application form, letting a deadline quietly lapse. It is not sophisticated; it just works.
+          </p>
+          <p>
+            Sequence deliberately. Begin with the roles you care about least, to calibrate your confidence and warm up your answers, and aim to reach your top choices once you are sharp. Where possible, line up timelines so that offers arrive in roughly the same window &mdash; real leverage comes from holding genuine, concurrent options, not from one offer at a time. Do no more than one loop per day when you can manage it; interviews are draining and your third of the day is reliably your worst, so protect sleep and energy around them. And be transparent about your parallel processes: telling companies you are interviewing elsewhere is normal, keeps everyone&rsquo;s timelines honest, often speeds things up, and signals that others already take you seriously.
+          </p>
+        </section>
+
+        <section id="negotiation">
+          <h2>Negotiation</h2>
+          <p>
+            Negotiating is expected, and skipping it leaves value on the table. Most offers have more room than candidates assume, and asking politely rarely costs anything. A few principles:
+          </p>
+          <ul>
+            <li><strong>Leverage comes from comparable alternatives.</strong> A competing offer from a true peer lab moves numbers in a way that a non-comparable one simply does not.</li>
+            <li><strong>Be straight about what would make the decision easy</strong>, whether or not you share exact figures. Some companies will ask for proof of competing offers; decide your comfort level with that in advance.</li>
+            <li><strong>Watch what you signal.</strong> Recruiters read enthusiasm accurately. If they already know you have decided in their favor, your leverage drops &mdash; warmth is fine, but showing your whole hand early is not.</li>
+            <li><strong>Respect the deadlines.</strong> They are often firmer than you would like and vary widely, from a week to &ldquo;take your time.&rdquo; Factor exploding offers into how you sequence everything.</li>
+          </ul>
+        </section>
+
+        <section id="offers">
+          <h2>Choosing an offer</h2>
+          <p>
+            There is no formula. Weigh what actually matters to you &mdash; the work, the people and your immediate manager, room to grow, location, compensation, the brand &mdash; and write those priorities down <em>before</em> offers arrive, while you can still think clearly. Day to day, the team and the manager usually matter more than the logo on the building.
+          </p>
+          <p>
+            Talk to as many of your would-be colleagues as you can, but remember that everyone recommends their own team, so weight concrete specifics over enthusiasm. Beware decisions driven by insecurity: accepting an early offer out of fear can foreclose better ones, while chasing marginal prestige can cost you a genuinely better fit. The process is noisy and partly luck; a rejection is not a verdict on your worth as a researcher. Once you have done the homework, trust your read.
+          </p>
+        </section>
+
+        <section id="checklist">
+          <h2>A topics checklist</h2>
+          <p>
+            A non-exhaustive map of what gets asked. You will not be tested on all of it, but gaps inside your own subfield are the most dangerous, so cover those first. Organize your own notes around something like this.
+          </p>
+          <p><strong>Foundations and math.</strong> Linear algebra (eigen-decomposition, SVD, rank, positive semi-definiteness, the Jacobian and Hessian); probability (expectation, variance and covariance, common distributions, Bayes&rsquo; rule); optimization (convexity, gradient descent and SGD, momentum, Adam and AdamW, second-order methods); information theory (entropy, cross-entropy, KL and Jensen&ndash;Shannon divergence).</p>
+          <p><strong>Core machine learning.</strong> Bias&ndash;variance, regularization, cross-validation, over- and under-fitting, evaluation (precision, recall, F1, ROC-AUC, calibration), the classic models (linear and logistic regression, SVMs, k-nearest neighbours, decision trees, bagging and boosting, k-means), dimensionality reduction (PCA), and MLE versus MAP.</p>
+          <p><strong>Deep learning.</strong> Backpropagation, weight initialization, normalization (batch, layer, RMS), activation functions, vanishing and exploding gradients, CNNs, RNNs and LSTMs, autoencoders, and the attention mechanism and transformer architecture.</p>
+          <p><strong>LLMs and sequence models.</strong> Tokenization, pre-training versus fine-tuning, RLHF and DPO, positional encodings (sinusoidal, relative, RoPE), efficient attention (such as flash attention), parameter-efficient fine-tuning (LoRA), mixture-of-experts, scaling laws, decoding strategies, and attention alternatives such as state-space models.</p>
+          <p><strong>Generative modeling.</strong> GANs, VAEs and the ELBO, the score function, diffusion (forward and reverse processes, DDPM and DDIM, the SDE and ODE views), flow matching, and classifier-free guidance.</p>
+          <p><strong>Reinforcement learning.</strong> Markov decision processes and the Bellman equations, value- versus policy-based methods, Q-learning and temporal-difference learning, policy gradients and actor&ndash;critic, PPO, exploration versus exploitation, on- versus off-policy, model-based RL and world models, and the link back to RLHF.</p>
+          <p><strong>Systems and applied ML.</strong> Data and model parallelism (DDP, FSDP, tensor and pipeline parallelism), mixed-precision training, gradient checkpointing and accumulation, profiling and bottlenecks, numerical precision, and the practical differences between PyTorch and JAX.</p>
+        </section>
+
+        <section id="closing">
+          <h2>Closing thoughts</h2>
+          <p>
+            The meta-point is the one worth keeping: interviewing is a separate, learnable skill stacked on top of research ability. Strong researchers who prepare for it deliberately do well; equally strong researchers who assume their record will speak for itself often do not. Prepare like it is a project, aim your preparation at the next concrete loop, practice out loud, and keep perspective &mdash; the process is stochastic, and one bad afternoon is not a referendum on you.
+          </p>
+          <p>
+            If this was useful, or you think something here is wrong, I&rsquo;m at <a href="mailto:sunnygupta@iitb.ac.in">sunnygupta@iitb.ac.in</a>.
+          </p>
+        </section>
+
+        <div class="article-end">
+          <div class="article-end__author">
+            <img src="../sunny.jpg" alt="Portrait of Sunny Gupta">
+            <div>
+              <p class="article-end__name">Sunny Gupta</p>
+              <p class="article-end__role">PhD Scholar, IIT Bombay &middot; Federated &amp; trustworthy AI for healthcare</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <script src="../analytics.js"></script>
+  <script>
+    (function () {
+      var links = Array.prototype.slice.call(document.querySelectorAll('.article-toc a'));
+      var ids = links.map(function (a) { return a.getAttribute('href').slice(1); });
+      function onScroll() {
+        var current = ids[0];
+        for (var i = 0; i < ids.length; i++) {
+          var el = document.getElementById(ids[i]);
+          if (el && el.getBoundingClientRect().top <= 140) current = ids[i];
+        }
+        links.forEach(function (a) {
+          a.classList.toggle('is-active', a.getAttribute('href') === '#' + current);
+        });
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
+  </script>
+</body>
+</html>

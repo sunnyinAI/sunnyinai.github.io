@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=8">
+  <link rel="stylesheet" href="styles.css?v=10">
   <style>
     #service, #education {
       background: #ffffff !important;
@@ -23,6 +23,7 @@
   <header class="top-nav">
     <nav class="top-nav__inner" aria-label="Page sections">
       <a href="#about">About</a>
+      <a href="#writing">Writing</a>
       <a href="#highlights">Publications</a>
       <a href="#focus">Focus</a>
       <a href="#experience">Experience</a>
@@ -33,6 +34,7 @@
   </header>
 
   <div class="page">
+    <div class="sidebar">
     <aside class="profile">
       <div class="profile__image">
         <img src="sunny.jpg" alt="Portrait of Sunny Gupta" loading="lazy">
@@ -79,6 +81,59 @@
 
       </div>
     </aside>
+
+      <section id="building" class="content__section projects-card">
+        <h2 class="section-title">Currently Building</h2>
+        <div class="projects-list">
+          <a class="project-item" href="https://sunnyinai.github.io/ErdosFC/fc/" target="_blank" rel="noopener">
+            <span class="project-item__head">
+              <span class="project-item__name">ErdosFC</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            </span>
+            <span class="project-item__sub">Erdos Federated Computing · a federated-learning runtime</span>
+          </a>
+          <a class="project-item" href="https://sunnyinai.github.io/ErdosFC/fai/" target="_blank" rel="noopener">
+            <span class="project-item__head">
+              <span class="project-item__name">ErdosFAI</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            </span>
+            <span class="project-item__sub">Erdos Federated Agentic Intelligence · an agent lifecycle platform</span>
+          </a>
+        </div>
+      </section>
+
+      <section id="writing" class="content__section writing-card">
+        <h2 class="section-title">Writing</h2>
+        <div class="writing-grid">
+          <!-- Article card — copy this entire <a>…</a> block to add a new post -->
+          <a class="article-card" href="articles/federated-learning-for-healthcare.html">
+            <div class="article-card__top">
+              <span class="article-card__tag">Research</span>
+              <span class="article-card__date">June 2026</span>
+            </div>
+            <h3 class="article-card__title">Federated Learning for Healthcare: The Ideas Behind My Research</h3>
+            <p class="article-card__excerpt">Why medical data can&rsquo;t move between hospitals &mdash; and the methods my PhD uses to train accurate, private, and fair models anyway.</p>
+            <span class="article-card__more">
+              Read article
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            </span>
+          </a>
+          <!-- /Article card -->
+          <a class="article-card" href="articles/ml-research-interviews.html">
+            <div class="article-card__top">
+              <span class="article-card__tag">Career</span>
+              <span class="article-card__date">June 2026</span>
+            </div>
+            <h3 class="article-card__title">A Field Guide to Machine Learning Research Interviews</h3>
+            <p class="article-card__excerpt">What the interview loop really looks like &mdash; and a concrete plan to prepare for it &mdash; when moving from a PhD into industry research.</p>
+            <span class="article-card__more">
+              Read article
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            </span>
+          </a>
+        </div>
+      </section>
+    </div>
 
     <main class="content">
       <section id="about" class="content__section">

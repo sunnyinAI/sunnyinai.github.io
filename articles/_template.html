@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+  ============================================================
+  ARTICLE TEMPLATE — how to publish a new post
+  ============================================================
+  1. Copy this file and rename it, e.g.  my-new-post.html
+  2. Fill in: <title>, meta description, eyebrow, H1 title, subtitle, meta row.
+  3. Write your sections inside <div class="article-body">. Give each
+     <section> a unique id, and add a matching <li><a href="#id"> line
+     to the Contents list so it appears in the sidebar (the highlight-on-
+     scroll works automatically).
+  4. Add a card on the homepage: open ../index.html, find the
+     <section id="writing">, copy the <a class="article-card"> … </a>
+     block, and point its href at your new file.
+
+  Handy building blocks (all styled already):
+    <p class="article-lede">…</p>          → larger intro paragraph
+    <p class="article-quote">…</p>          → centered pull-quote
+    <div class="article-callout">…</div>    → highlighted note box
+    <span class="paper-ref">NAME</span>     → small blue chip (use <a class="paper-ref" href="…"> to link it)
+    <figure class="article-figure"> … <figcaption>…</figcaption></figure>
+  ============================================================
+-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Your Article Title | Sunny Gupta</title>
+  <meta name="description" content="A one-sentence summary of the article for search engines and link previews.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css?v=10">
+</head>
+<body data-ga-id="" data-plausible-domain="">
+  <header class="article-nav">
+    <div class="article-nav__inner">
+      <a class="article-nav__back" href="../index.html#writing">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        Back to home
+      </a>
+      <span class="article-nav__name">Sunny Gupta</span>
+    </div>
+  </header>
+
+  <article class="article">
+    <div class="article-hero">
+      <p class="article-hero__eyebrow">Category · Month 2026</p>
+      <h1 class="article-hero__title">Your Article Title Goes Here</h1>
+      <p class="article-hero__subtitle">A short, inviting subtitle that says what the reader will get out of this piece.</p>
+      <div class="article-hero__meta">
+        <strong>Sunny Gupta</strong>
+        <span class="article-hero__dot"></span>
+        <span>Month 2026</span>
+        <span class="article-hero__dot"></span>
+        <span>X min read</span>
+      </div>
+    </div>
+
+    <div class="article-layout">
+      <aside class="article-toc">
+        <p class="article-toc__label">Contents</p>
+        <nav aria-label="Article sections">
+          <ol>
+            <!-- One <li> per section below. The href must match the section id. -->
+            <li><a href="#section-one">First section</a></li>
+            <li><a href="#section-two">Second section</a></li>
+          </ol>
+        </nav>
+      </aside>
+
+      <div class="article-body">
+        <p class="article-lede">
+          Open with a strong lede paragraph that frames the question and tells the reader why it matters.
+        </p>
+
+        <section id="section-one">
+          <h2>First section</h2>
+          <p>Your writing goes here. Use <strong>bold</strong> for emphasis and <a href="#">links</a> where useful.</p>
+
+          <p class="article-quote">A memorable line works well as a centered pull-quote.</p>
+        </section>
+
+        <section id="section-two">
+          <h2>Second section</h2>
+          <p>Another paragraph. Reference a paper with a chip like <span class="paper-ref">PaperName</span>.</p>
+
+          <div class="article-callout">
+            <p>Use a callout box for an aside, a key takeaway, or a definition you want to stand out.</p>
+          </div>
+        </section>
+      </div>
+    </div>
+  </article>
+
+  <script src="../analytics.js"></script>
+  <script>
+    (function () {
+      var links = Array.prototype.slice.call(document.querySelectorAll('.article-toc a'));
+      var ids = links.map(function (a) { return a.getAttribute('href').slice(1); });
+      function onScroll() {
+        var current = ids[0];
+        for (var i = 0; i < ids.length; i++) {
+          var el = document.getElementById(ids[i]);
+          if (el && el.getBoundingClientRect().top <= 140) current = ids[i];
+        }
+        links.forEach(function (a) {
+          a.classList.toggle('is-active', a.getAttribute('href') === '#' + current);
+        });
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
+  </script>
+</body>
+</html>

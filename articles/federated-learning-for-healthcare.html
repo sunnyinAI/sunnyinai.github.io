@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Federated Learning for Healthcare: The Ideas Behind My Research | Sunny Gupta</title>
+  <meta name="description" content="Why medical data can't move between hospitals — and the methods my PhD uses to train accurate, private, and fair models anyway.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css?v=10">
+</head>
+<body data-ga-id="" data-plausible-domain="">
+  <header class="article-nav">
+    <div class="article-nav__inner">
+      <a class="article-nav__back" href="../index.html#writing">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        Back to home
+      </a>
+      <span class="article-nav__name">Sunny Gupta</span>
+    </div>
+  </header>
+
+  <article class="article">
+    <div class="article-hero">
+      <p class="article-hero__eyebrow">Research · June 2026</p>
+      <h1 class="article-hero__title">Federated Learning for Healthcare: The Ideas Behind My Research</h1>
+      <p class="article-hero__subtitle">Why medical data can&rsquo;t move between hospitals &mdash; and how we train accurate, private, and fair models anyway.</p>
+      <div class="article-hero__meta">
+        <strong>Sunny Gupta</strong>
+        <span class="article-hero__dot"></span>
+        <span>June 2026</span>
+        <span class="article-hero__dot"></span>
+        <span>8 min read</span>
+      </div>
+    </div>
+
+    <div class="article-layout">
+      <aside class="article-toc">
+        <p class="article-toc__label">Contents</p>
+        <nav aria-label="Article sections">
+          <ol>
+            <li><a href="#problem">Data that can&rsquo;t move</a></li>
+            <li><a href="#idea">The core idea</a></li>
+            <li><a href="#heterogeneity">Every hospital is different</a></li>
+            <li><a href="#personalization">One global model isn&rsquo;t enough</a></li>
+            <li><a href="#privacy">Private by design</a></li>
+            <li><a href="#generalization">Generalizing to unseen hospitals</a></li>
+            <li><a href="#longtail">The long tail</a></li>
+            <li><a href="#efficiency">Making it actually run</a></li>
+            <li><a href="#future">Where this is going</a></li>
+            <li><a href="#closing">Closing thoughts</a></li>
+          </ol>
+        </nav>
+      </aside>
+
+      <div class="article-body">
+        <p class="article-lede">
+          Some of the most valuable training data in the world sits on hospital servers that are never allowed to talk to each other. A large part of my PhD is about getting good models out of that situation without ever moving the data. Here is the intuition behind the problem, and the methods I&rsquo;ve worked on to chip away at it.
+        </p>
+
+        <section id="problem">
+          <h2>The problem: data that can&rsquo;t move</h2>
+          <p>
+            Modern medical AI is hungry for data, and a single hospital rarely has enough of it &mdash; especially for the rare conditions where help is needed most. The obvious fix is to pool everyone&rsquo;s records together. The obvious fix is also illegal in most of the world.
+          </p>
+          <p>
+            Privacy law (<a href="https://www.hhs.gov/hipaa/index.html" target="_blank" rel="noopener">HIPAA</a> in the US, <a href="https://gdpr.eu/" target="_blank" rel="noopener">GDPR</a> in Europe, India&rsquo;s DPDP Act), institutional policy, and plain ethics all mean that patient records do not leave the building. Often two hospitals in the same city cannot share a single scan. So we are left with the worst of both worlds: an enormous amount of data in aggregate, locked in isolated silos, none of it individually sufficient.
+          </p>
+        </section>
+
+        <section id="idea">
+          <h2>The core idea of federated learning</h2>
+          <p>
+            Federated learning (FL) flips the usual setup. Instead of bringing the data to the model, you bring the model to the data. A coordinating server sends the current model to each hospital; each hospital trains on its own data for a little while; they send back only the <strong>updates</strong> &mdash; the changes to the model&rsquo;s weights &mdash; not the data; the server averages those updates into a new global model; and the whole thing repeats. The canonical recipe is called FedAvg.
+          </p>
+
+          <figure class="article-figure">
+            <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="figTitle figDesc">
+              <title id="figTitle">Federated learning overview</title>
+              <desc id="figDesc">A central global model exchanges only model updates with three hospitals; each hospital keeps its patient data local.</desc>
+              <defs>
+                <marker id="chev" markerWidth="9" markerHeight="9" refX="4" refY="4" orient="auto-start-reverse">
+                  <path d="M2 2 L5.6 4 L2 6" fill="none" stroke="#7e97bf" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                </marker>
+              </defs>
+
+              <!-- connectors -->
+              <line x1="360" y1="82" x2="122" y2="200" stroke="#9bb1d4" stroke-width="1.8" marker-start="url(#chev)" marker-end="url(#chev)"></line>
+              <line x1="360" y1="82" x2="360" y2="200" stroke="#9bb1d4" stroke-width="1.8" marker-start="url(#chev)" marker-end="url(#chev)"></line>
+              <line x1="360" y1="82" x2="598" y2="200" stroke="#9bb1d4" stroke-width="1.8" marker-start="url(#chev)" marker-end="url(#chev)"></line>
+
+              <!-- server -->
+              <rect x="258" y="22" width="204" height="60" rx="15" fill="#0047ab"></rect>
+              <text x="360" y="47" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff" font-family="Inter, sans-serif">Global model</text>
+              <text x="360" y="65" text-anchor="middle" font-size="11" fill="#cdddf4" font-family="Inter, sans-serif">averages the updates</text>
+
+              <!-- central label -->
+              <rect x="294" y="120" width="132" height="28" rx="14" fill="#eaf0f9" stroke="#cdddf4"></rect>
+              <rect x="311" y="130" width="9" height="8" rx="1.5" fill="#0047ab"></rect>
+              <path d="M312.5 130 v-2.4 a3 3 0 0 1 6 0 v2.4" fill="none" stroke="#0047ab" stroke-width="1.4"></path>
+              <text x="326" y="139" font-size="11" font-weight="600" fill="#0047ab" font-family="Inter, sans-serif">model updates only</text>
+
+              <!-- hospital A -->
+              <rect x="24" y="200" width="196" height="104" rx="15" fill="#ffffff" stroke="#dfe4ee"></rect>
+              <circle cx="122" cy="226" r="9" fill="#eaf0f9"></circle>
+              <path d="M117 226 h10 M122 221 v10" stroke="#0047ab" stroke-width="1.9" stroke-linecap="round"></path>
+              <text x="122" y="256" text-anchor="middle" font-size="14" font-weight="700" fill="#101b2b" font-family="Inter, sans-serif">Hospital A</text>
+              <text x="122" y="276" text-anchor="middle" font-size="11" fill="#5e6b81" font-family="Inter, sans-serif">patient data stays here</text>
+              <text x="122" y="291" text-anchor="middle" font-size="11" fill="#5e6b81" font-family="Inter, sans-serif">trains a local copy</text>
+
+              <!-- hospital B -->
+              <rect x="262" y="200" width="196" height="104" rx="15" fill="#ffffff" stroke="#dfe4ee"></rect>
+              <circle cx="360" cy="226" r="9" fill="#eaf0f9"></circle>
+              <path d="M355 226 h10 M360 221 v10" stroke="#0047ab" stroke-width="1.9" stroke-linecap="round"></path>
+              <text x="360" y="256" text-anchor="middle" font-size="14" font-weight="700" fill="#101b2b" font-family="Inter, sans-serif">Hospital B</text>
+              <text x="360" y="276" text-anchor="middle" font-size="11" fill="#5e6b81" font-family="Inter, sans-serif">patient data stays here</text>
+              <text x="360" y="291" text-anchor="middle" font-size="11" fill="#5e6b81" font-family="Inter, sans-serif">trains a local copy</text>
+
+              <!-- hospital C -->
+              <rect x="500" y="200" width="196" height="104" rx="15" fill="#ffffff" stroke="#dfe4ee"></rect>
+              <circle cx="598" cy="226" r="9" fill="#eaf0f9"></circle>
+              <path d="M593 226 h10 M598 221 v10" stroke="#0047ab" stroke-width="1.9" stroke-linecap="round"></path>
+              <text x="598" y="256" text-anchor="middle" font-size="14" font-weight="700" fill="#101b2b" font-family="Inter, sans-serif">Hospital C</text>
+              <text x="598" y="276" text-anchor="middle" font-size="11" fill="#5e6b81" font-family="Inter, sans-serif">patient data stays here</text>
+              <text x="598" y="291" text-anchor="middle" font-size="11" fill="#5e6b81" font-family="Inter, sans-serif">trains a local copy</text>
+            </svg>
+            <figcaption>The model travels; the data does not. Each round, hospitals receive the global model, train locally, and send back only weight updates &mdash; which the server averages.</figcaption>
+          </figure>
+
+          <p>
+            That is the whole trick, and it sounds almost too easy. The difficulty lives in everything that the word &ldquo;average&rdquo; quietly hides.
+          </p>
+        </section>
+
+        <section id="heterogeneity">
+          <h2>The hard part: every hospital is different</h2>
+          <p>
+            Averaging assumes the things being averaged are roughly comparable. In healthcare they emphatically are not. Scanners differ, patient populations differ, and even the way conditions are labelled differs from site to site. In the jargon, the data is <strong>non-IID</strong>. Naively averaging updates from very different distributions can drag the global model toward a compromise that is good for nobody &mdash; an effect known as client drift.
+          </p>
+          <p>
+            A lot of my work targets this heterogeneity head-on. In <a class="paper-ref" href="https://proceedings.mlr.press/v281/gupta25a.html" target="_blank" rel="noopener">FedStein</a>, we borrow a classic idea from statistics &mdash; the James&ndash;Stein estimator &mdash; to shrink each client&rsquo;s statistics toward a shared estimate, which stabilises training across multiple domains. In <span class="paper-ref">UniVarFL</span>, we regularise the <em>uniformity</em> and <em>variance</em> of client representations, so features stay well-spread and comparable across clients even when their label distributions are wildly imbalanced.
+          </p>
+        </section>
+
+        <section id="personalization">
+          <h2>One global model isn&rsquo;t enough</h2>
+          <p>
+            Even if we fix the optimisation, a single global model is often the wrong goal. The clinically useful model for one hospital&rsquo;s population may genuinely differ from another&rsquo;s. The answer is <strong>personalization</strong>: a model that is mostly shared but adapts to each site.
+          </p>
+          <p>
+            A tool I keep returning to is the hypernetwork &mdash; a small network that <em>generates</em> the weights of the main model, conditioned on a compact description of each client. In <span class="paper-ref">FedNeuro</span>, we use exactly this idea to produce site-personalized, privacy-enhanced models for multi-site fMRI analysis, where every scanner and cohort looks a little different. One shared backbone, many tailored heads.
+          </p>
+        </section>
+
+        <section id="privacy">
+          <h2>Private by design &mdash; and provably so</h2>
+          <p>
+            Federated learning keeps raw data local, but that is not the same as keeping it private. The updates themselves can leak information: given a gradient, an attacker can sometimes reconstruct an approximation of the data that produced it. So &ldquo;the data stays home&rdquo; is a starting point, not a guarantee.
+          </p>
+          <p>
+            That is why we layer on <strong>differential privacy</strong> (adding calibrated noise under a formal, accountable privacy budget) and <strong>secure aggregation</strong> (so the server only ever sees a sum of updates, never an individual one). In <span class="paper-ref">FedHypeVAE</span>, we push this further: rather than sharing model updates directly, clients share differentially private <em>embeddings</em> produced by hypernetwork-conditioned conditional VAEs &mdash; giving the collaboration useful signal while keeping a formal privacy guarantee attached to it.
+          </p>
+          <p class="article-quote">
+            Privacy in FL isn&rsquo;t a feature you bolt on at the end &mdash; it&rsquo;s a constraint you design the entire training procedure around.
+          </p>
+        </section>
+
+        <section id="generalization">
+          <h2>Generalizing to hospitals you&rsquo;ve never seen</h2>
+          <p>
+            A model can ace every hospital it trained on and then fall apart at a new clinic with an unfamiliar scanner. This is the problem of <strong>domain generalization</strong>, and federation makes it both harder (you never get to see all the domains together) and more important (the entire point is to deploy widely).
+          </p>
+          <p>
+            In <a class="paper-ref" href="https://openaccess.thecvf.com/content/CVPR2025W/FedVision/html/Gupta_FedAlign_Federated_Domain_Generalization_with_Cross-Client_Feature_Alignment_CVPRW_2025_paper.html" target="_blank" rel="noopener">FedAlign</a> (CVPR&rsquo;25), we align feature representations across clients so the model latches onto what is common to the disease rather than what is idiosyncratic to a machine. In <a class="paper-ref" href="https://openreview.net/forum?id=sf1ovOGTaf" target="_blank" rel="noopener">FedVR</a>, a variance-regularized hypernetwork discourages the model from over-fitting to any single domain. The common thread is to penalise the model whenever it leans on a site-specific shortcut.
+          </p>
+        </section>
+
+        <section id="longtail">
+          <h2>The long tail: rare cases matter most</h2>
+          <p>
+            Medicine is long-tailed. The rare diagnosis is frequently the one you most need the model to catch, and it is exactly the one with the fewest examples &mdash; scattered thinly across clients. Standard training quietly optimises for the common case and lets the rest blur into the background.
+          </p>
+          <p>
+            In <a class="paper-ref" href="https://icml.cc/virtual/2025/47994" target="_blank" rel="noopener">FEDTAIL</a> (ICML&rsquo;25, oral), we combine long-tailed learning with domain generalization, using sharpness-guided gradient matching so that rare classes are not steamrolled by frequent ones during aggregation. In earlier work, <a class="paper-ref" href="https://bmvc2024.org/proceedings/416/" target="_blank" rel="noopener">Taming the Tail</a> (BMVC&rsquo;24), we used an asymmetric loss and a Pad&eacute; approximation to handle extreme class imbalance in medical images. Different tools, same commitment: the tail is not noise.
+          </p>
+        </section>
+
+        <section id="efficiency">
+          <h2>Making it actually run</h2>
+          <p>
+            None of this matters if training is too slow or too heavy to run across a real network. Communication is the bottleneck in FL &mdash; every round ships model updates over the wire, often to many clients on modest hardware. Two directions I&rsquo;ve worked on: reaching a good model in fewer rounds, and making each message smaller.
+          </p>
+          <p>
+            <a class="paper-ref" href="https://ieeexplore.ieee.org/abstract/document/10825820" target="_blank" rel="noopener">FLeNS</a> (IEEE BigData&rsquo;24, oral) brings a Nesterov-accelerated, sketched Newton method to FL &mdash; much of the benefit of second-order optimisation without paying its full cost &mdash; so we converge in fewer communication rounds. On the message-size side, <a class="paper-ref" href="https://openreview.net/forum?id=lhA3oVClTf" target="_blank" rel="noopener">Sequential Compression Layers</a> (ICLR&rsquo;25 workshop) shrink what foundation-model clients need to exchange during federated fine-tuning.
+          </p>
+        </section>
+
+        <section id="future">
+          <h2>Where this is going</h2>
+          <p>
+            The frontier right now is <strong>federated foundation models</strong>: adapting large vision-language and language models across institutions, parameter-efficiently, without ever centralising the data. My recent work pushes in this direction &mdash; <span class="paper-ref">BiPrompt</span> for debiasing vision-language models, and federated cross-modal prompt generation &mdash; alongside multi-agent federated systems, where decentralized agents collaborate rather than a single server orchestrating passive clients.
+          </p>
+          <p>
+            The long-term goal I care about is a specific combination: foundation-model capability, hospital-grade privacy, fairness across populations, and reliability on the rare cases that matter. None of those is optional in a clinic.
+          </p>
+        </section>
+
+        <section id="closing">
+          <h2>Closing thoughts</h2>
+          <p>
+            Federated learning is sometimes pitched as a privacy gimmick. I think it is something more interesting: a forcing function. Because you cannot look at the data, you are pushed to build models that are robust to heterogeneity, honest about uncertainty, fair across populations, and frugal with communication &mdash; which, not coincidentally, are the properties you would want from a clinical model in the first place.
+          </p>
+          <p>
+            If you&rsquo;re working on any of this &mdash; or you think I&rsquo;ve got something wrong &mdash; I&rsquo;d genuinely love to hear from you: <a href="mailto:sunnygupta@iitb.ac.in">sunnygupta@iitb.ac.in</a>.
+          </p>
+        </section>
+
+        <div class="article-end">
+          <div class="article-end__author">
+            <img src="../sunny.jpg" alt="Portrait of Sunny Gupta">
+            <div>
+              <p class="article-end__name">Sunny Gupta</p>
+              <p class="article-end__role">PhD Scholar, IIT Bombay &middot; Federated &amp; trustworthy AI for healthcare</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <script src="../analytics.js"></script>
+  <script>
+    (function () {
+      var links = Array.prototype.slice.call(document.querySelectorAll('.article-toc a'));
+      var ids = links.map(function (a) { return a.getAttribute('href').slice(1); });
+      function onScroll() {
+        var current = ids[0];
+        for (var i = 0; i < ids.length; i++) {
+          var el = document.getElementById(ids[i]);
+          if (el && el.getBoundingClientRect().top <= 140) current = ids[i];
+        }
+        links.forEach(function (a) {
+          a.classList.toggle('is-active', a.getAttribute('href') === '#' + current);
+        });
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
+  </script>
+</body>
+</html>
