@@ -567,6 +567,33 @@ a.conf-tag:focus {
   gap: 6px;
 }
 
+.journal-review {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  display: grid;
+  gap: 6px;
+}
+
+.journal-review__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.journal-review__title {
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.journal-review p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
 .conf-sep {
   color: var(--text-muted);
   font-size: 0.85rem;
@@ -611,6 +638,18 @@ a.conf-tag:focus {
 
   .section-title {
     letter-spacing: 0.18em;
+  }
+
+  .timeline__head,
+  .timeline__sub {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+  }
+
+  .timeline__date,
+  .timeline__place {
+    white-space: normal;
   }
 }
 
